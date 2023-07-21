@@ -1,15 +1,17 @@
 package com.example.ladiadminservice.service.Impl;
 
+import com.example.ladiadminservice.model.BaseEntity;
 import com.example.ladiadminservice.query.CustomRsqlVisitor;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.service.BaseService;
+import com.example.ladiadminservice.uitl.ObjectMapperUtils;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
-public abstract class BaseServiceImpl<T> implements BaseService<T> {
+public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
     protected abstract BaseRepository<T> getRepository();
 
     @Override
@@ -31,7 +33,9 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public T update(T t){
-        return this.getRepository().save(t);
+        T entityMy = this.getById(t.getId());
+        ObjectMapperUtils.map(t, entityMy);
+        return getRepository().save(entityMy);
     }
     @Override
     public T getById(Long id) {

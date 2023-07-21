@@ -1,8 +1,10 @@
 package com.example.ladiadminservice.service;
 
+import com.example.ladiadminservice.model.BaseEntity;
+
 import java.util.List;
 
-public interface BaseService<T> {
+public interface BaseService<T extends BaseEntity> {
     public List<T> search(String filter);
     public T create(T t);
     public T update(T t);
