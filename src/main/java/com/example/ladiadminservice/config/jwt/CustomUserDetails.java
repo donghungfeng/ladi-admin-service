@@ -3,6 +3,8 @@ package com.example.ladiadminservice.config.jwt;
 import com.example.ladiadminservice.model.User;
 import com.example.ladiadminservice.repository.RoleRepository;
 import com.example.ladiadminservice.repository.RoleUserRepository;
+import com.example.ladiadminservice.service.RoleService;
+import com.example.ladiadminservice.service.RoleUserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,15 +18,15 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    RoleUserRepository roleUserRepository;
+    RoleUserService roleUserService;
 
-    RoleRepository roleRepository;
+    RoleService roleService;
     private User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        Long roleId = roleUserRepository.findAllByUserId(user.getId()).get(0).getRoleId();
-        authorities.add(new SimpleGrantedAuthority(roleRepository.findAllById(roleId).getCode()));
+        Long roleId = roleUserService.getAllByUserId(user.getId()).get(0).getRoleId();
+        authorities.add(new SimpleGrantedAuthority(roleService.getById(roleId).getCode()));
         return authorities;
     }
 

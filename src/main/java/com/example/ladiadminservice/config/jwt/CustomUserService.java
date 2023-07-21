@@ -4,6 +4,8 @@ import com.example.ladiadminservice.model.User;
 import com.example.ladiadminservice.repository.RoleRepository;
 import com.example.ladiadminservice.repository.RoleUserRepository;
 import com.example.ladiadminservice.repository.UserRepository;
+import com.example.ladiadminservice.service.RoleService;
+import com.example.ladiadminservice.service.RoleUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,16 +17,16 @@ public class CustomUserService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    RoleUserRepository roleUserRepository;
+    RoleUserService roleUserService;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleService roleService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new CustomUserDetails( roleUserRepository, roleRepository, user);
+        return new CustomUserDetails( roleUserService, roleService, user);
     }
 }

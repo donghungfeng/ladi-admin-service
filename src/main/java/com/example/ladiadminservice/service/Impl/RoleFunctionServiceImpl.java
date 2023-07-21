@@ -9,6 +9,8 @@ import com.example.ladiadminservice.service.RoleFunctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoleFunctionServiceImpl extends BaseServiceImpl<RoleFunction> implements RoleFunctionService {
     @Autowired
@@ -16,5 +18,10 @@ public class RoleFunctionServiceImpl extends BaseServiceImpl<RoleFunction> imple
     @Override
     protected BaseRepository<RoleFunction> getRepository() {
         return roleFunctionRepository;
+    }
+
+    @Override
+    public List<RoleFunction> getAllByInRoleId(List<Long> roleIdList) {
+        return roleFunctionRepository.findAllByInRoleId(roleIdList);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ladiadminservice.reponse;
+package com.example.ladiadminservice.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

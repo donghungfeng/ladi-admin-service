@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.controller;
 
-import com.example.ladiadminservice.reponse.BaseResponse;
+import com.example.ladiadminservice.response.BaseResponse;
 import com.example.ladiadminservice.service.BaseService;
 import org.springframework.web.bind.annotation.*;
 

@@ -7,6 +7,8 @@ import com.example.ladiadminservice.service.FunctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FunctionServiceImpl extends BaseServiceImpl<Function> implements FunctionService {
     @Autowired
@@ -14,5 +16,10 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
     @Override
     protected BaseRepository<Function> getRepository() {
         return functionRepository;
+    }
+
+    @Override
+    public List<Function> getAllByInId(List<Long> idList) {
+        return functionRepository.findAllByInId(idList);
     }
 }

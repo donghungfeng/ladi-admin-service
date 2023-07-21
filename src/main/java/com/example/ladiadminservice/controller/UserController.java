@@ -1,7 +1,7 @@
 package com.example.ladiadminservice.controller;
 
 import com.example.ladiadminservice.model.User;
-import com.example.ladiadminservice.reponse.BaseResponse;
+import com.example.ladiadminservice.response.BaseResponse;
 import com.example.ladiadminservice.request.CreateUserRequest;
 import com.example.ladiadminservice.request.LoginRequest;
 import com.example.ladiadminservice.service.BaseService;
@@ -28,8 +28,8 @@ public class UserController extends BaseController<User> {
     }
 
     @PostMapping("login")
-    public BaseResponse login(@RequestBody LoginRequest loginRequest, @RequestParam String unit) throws NoSuchAlgorithmException {
-        return userService.login(loginRequest, unit);
+    public BaseResponse login(@RequestBody LoginRequest loginRequest, @RequestParam Long unitId) throws NoSuchAlgorithmException {
+        return userService.login(loginRequest, unitId);
     }
 
 
