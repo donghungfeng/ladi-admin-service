@@ -12,7 +12,9 @@ import com.example.ladiadminservice.request.LoginRequest;
 import com.example.ladiadminservice.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
@@ -42,6 +44,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Override
     protected BaseRepository<User> getRepository() {
         return userRepository;
@@ -51,30 +57,36 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         Unit unit = unitService.getById(createUserRequest.getUnitId());
         User user = modelMapper.map(createUserRequest, User.class);
         user.setUnit(unit);
-        user.setPassword(enCode(user.getPassword()));
-        User user1 = userRepository.save(user);
-        Role role = roleService.getById(createUserRequest.getRoleId());
+        user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
+        user = userRepository.save(user);
+
+        mapUserRole(user, createUserRequest.getRoleId(), unit);
+
+        return new BaseResponse(200, "OK", user);
+    }
+
+    private void mapUserRole(User user, Long roleId, Unit unit) {
+        Role role = roleService.getById(roleId);
         RoleUser roleUser = new RoleUser();
         roleUser.setCode(unit.getName());
-        roleUser.setName(unit.getName()+"-"+role.getName());
-        roleUser.setUserId(user1.getId());
+        roleUser.setName(unit.getName() + "-" + role.getName());
+        roleUser.setUserId(user.getId());
         roleUser.setRoleId(role.getId());
         roleUserService.create(roleUser);
-        return new BaseResponse(200, "OK", user);
     }
 
     @Override
     public BaseResponse login(LoginRequest loginRequest, Long unitId) throws NoSuchAlgorithmException {
         Unit unit = unitService.getById(unitId);
         User user = userRepository.findAllByUserNameAndUnit(loginRequest.getUserName(), unit);
-        if (user == null){
+        if (user == null) {
             return new BaseResponse(500, "Account không tồn tại", null);
         }
-        String password = enCode(loginRequest.getPassword());
-        if (!user.getPassword().equals(password)){
+
+        if (!isValidPassword(user.getPassword(), loginRequest.getPassword())) {
             return new BaseResponse(500, "Mật khẩu không chính xác", null);
         }
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+
         LoginResponse loginResponse = new LoginResponse();
         List<RoleUser> roleUserList = roleUserService.getAllByUserId(user.getId());
         List<Long> roleIdList = roleUserList.stream().map(item -> item.getRoleId()).collect(Collectors.toList());
@@ -82,19 +94,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         List<RoleFunction> roleFunctionList = roleFunctionService.getAllByInRoleId(roleIdList);
         List<Long> functionIdList = roleFunctionList.stream().map(item -> item.getFunctionId()).collect(Collectors.toList());
         loginResponse.setFunctionList(functionService.getAllByInId(functionIdList));
-        loginResponse.setToken(jwtTokenProvider.generateToken(new CustomUserDetails(roleUserService, roleService, user)));
+        loginResponse.setToken(jwtTokenProvider.generateToken(user.getUserName()));
         return new BaseResponse(200, "OK", loginResponse);
     }
 
-
-    public String enCode(String string) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(string.getBytes());
-        byte[] digest = md.digest();
-        return DatatypeConverter
-                .printHexBinary(digest).toUpperCase();
+    private boolean isValidPassword(String userPass, String reqPass) {
+        return !StringUtils.isEmpty(reqPass) && passwordEncoder.matches(reqPass, userPass);
     }
-
-
 }
 

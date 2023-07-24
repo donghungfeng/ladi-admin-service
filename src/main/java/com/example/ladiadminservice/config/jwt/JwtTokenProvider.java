@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     private final String JWT_SECRET = "DHF_GROUP";
 
-    public String generateToken(CustomUserDetails userDetails){
+    public String generateToken(String username){
         return Jwts.builder()
-                .setSubject(userDetails.getUser().getUserName())
+                .setSubject(username)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }

@@ -1,5 +1,6 @@
 package com.example.ladiadminservice.controller;
 
+import com.example.ladiadminservice.model.BaseEntity;
 import com.example.ladiadminservice.response.BaseResponse;
 import com.example.ladiadminservice.service.BaseService;
 import org.springframework.web.bind.annotation.*;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-public abstract class BaseController<T> {
+public abstract class BaseController<T extends BaseEntity> {
     protected abstract BaseService<T> getService();
 
     @PostMapping("")
