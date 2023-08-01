@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.repository;
 
-import com.example.ladiadminservice.model.Function;
+import com.example.ladiadminservice.repository.entity.Function;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;

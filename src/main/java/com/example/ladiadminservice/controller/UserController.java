@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.controller;
 
-import com.example.ladiadminservice.model.User;
+import com.example.ladiadminservice.repository.entity.User;
 import com.example.ladiadminservice.response.BaseResponse;
 import com.example.ladiadminservice.request.CreateUserRequest;
 import com.example.ladiadminservice.request.LoginRequest;

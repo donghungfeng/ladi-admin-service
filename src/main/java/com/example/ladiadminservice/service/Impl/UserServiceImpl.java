@@ -1,9 +1,8 @@
 package com.example.ladiadminservice.service.Impl;
 
 
-import com.example.ladiadminservice.config.jwt.CustomUserDetails;
 import com.example.ladiadminservice.config.jwt.JwtTokenProvider;
-import com.example.ladiadminservice.model.*;
+import com.example.ladiadminservice.repository.entity.*;
 import com.example.ladiadminservice.response.BaseResponse;
 import com.example.ladiadminservice.response.LoginResponse;
 import com.example.ladiadminservice.repository.*;
@@ -16,8 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,8 +65,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     private void mapUserRole(User user, Long roleId, Unit unit) {
         Role role = roleService.getById(roleId);
         RoleUser roleUser = new RoleUser();
-        roleUser.setCode(unit.getName());
-        roleUser.setName(unit.getName() + "-" + role.getName());
+//        roleUser.setCode(unit.getName());
+//        roleUser.setName(unit.getName() + "-" + role.getName());
         roleUser.setUserId(user.getId());
         roleUser.setRoleId(role.getId());
         roleUserService.create(roleUser);

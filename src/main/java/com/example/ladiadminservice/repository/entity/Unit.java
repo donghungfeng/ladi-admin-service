@@ -1,4 +1,4 @@
-package com.example.ladiadminservice.model;
+package com.example.ladiadminservice.repository.entity;
 
 import lombok.*;
 

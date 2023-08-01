@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.repository;
 
-import com.example.ladiadminservice.model.Role;
+import com.example.ladiadminservice.repository.entity.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

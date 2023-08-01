@@ -1,7 +1,7 @@
 package com.example.ladiadminservice.controller;
 
 
-import com.example.ladiadminservice.model.Unit;
+import com.example.ladiadminservice.repository.entity.Unit;
 import com.example.ladiadminservice.service.BaseService;
 import com.example.ladiadminservice.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.example.ladiadminservice.service;
 
 
-import com.example.ladiadminservice.model.Role;
+import com.example.ladiadminservice.repository.entity.Role;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.example.ladiadminservice.config.jwt;
 
+import com.example.ladiadminservice.uitl.ContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     CustomUserService customUserService;
+    @Autowired
+    private ContextUtil contextUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,16 +34,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //lay jwt tu request
             String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)){
+            if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
                 String userName = jwtTokenProvider.getAccountUserNameFromJWT(jwt);
+                contextUtil.setUserName(userName);
                 UserDetails userDetails = customUserService.loadUserByUsername(userName);
-                if (userDetails != null){
+                if (userDetails != null) {
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             log.error("failed", ex);
         }
         filterChain.doFilter(request, response);

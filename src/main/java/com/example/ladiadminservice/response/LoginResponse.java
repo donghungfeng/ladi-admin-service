@@ -1,7 +1,7 @@
 package com.example.ladiadminservice.response;
 
-import com.example.ladiadminservice.model.Function;
-import com.example.ladiadminservice.model.Role;
+import com.example.ladiadminservice.repository.entity.Function;
+import com.example.ladiadminservice.repository.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

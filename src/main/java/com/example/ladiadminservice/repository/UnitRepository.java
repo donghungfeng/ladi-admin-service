@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.repository;
 
-import com.example.ladiadminservice.model.Unit;
+import com.example.ladiadminservice.repository.entity.Unit;
 
 public interface UnitRepository extends BaseRepository<Unit>{
 }

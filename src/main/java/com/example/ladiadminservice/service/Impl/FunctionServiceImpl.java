@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.service.Impl;
 
-import com.example.ladiadminservice.model.Function;
+import com.example.ladiadminservice.repository.entity.Function;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.FunctionRepository;
 import com.example.ladiadminservice.service.FunctionService;

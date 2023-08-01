@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.service.Impl;
 
-import com.example.ladiadminservice.model.RoleUser;
+import com.example.ladiadminservice.repository.entity.RoleUser;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.RoleUserRepository;
 import com.example.ladiadminservice.service.RoleUserService;

@@ -1,7 +1,7 @@
 package com.example.ladiadminservice.controller;
 
 
-import com.example.ladiadminservice.model.RoleUser;
+import com.example.ladiadminservice.repository.entity.RoleUser;
 import com.example.ladiadminservice.service.BaseService;
 import com.example.ladiadminservice.service.RoleUserService;
 import org.springframework.beans.factory.annotation.Autowired;

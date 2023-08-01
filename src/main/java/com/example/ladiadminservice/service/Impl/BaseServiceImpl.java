@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.service.Impl;
 
-import com.example.ladiadminservice.model.BaseEntity;
+import com.example.ladiadminservice.repository.entity.BaseEntity;
 import com.example.ladiadminservice.query.CustomRsqlVisitor;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.service.BaseService;

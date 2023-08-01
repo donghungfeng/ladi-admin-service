@@ -2,7 +2,7 @@ package com.example.ladiadminservice.service.Impl;
 
 
 
-import com.example.ladiadminservice.model.RoleFunction;
+import com.example.ladiadminservice.repository.entity.RoleFunction;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.RoleFunctionRepository;
 import com.example.ladiadminservice.service.RoleFunctionService;

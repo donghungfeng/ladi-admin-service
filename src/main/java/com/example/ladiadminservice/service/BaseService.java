@@ -1,6 +1,6 @@
 package com.example.ladiadminservice.service;
 
-import com.example.ladiadminservice.model.BaseEntity;
+import com.example.ladiadminservice.repository.entity.BaseEntity;
 
 import java.util.List;
 
