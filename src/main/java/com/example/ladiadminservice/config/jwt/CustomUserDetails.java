@@ -1,8 +1,9 @@
 package com.example.ladiadminservice.config.jwt;
 
 import com.example.ladiadminservice.repository.entity.User;
+import com.example.ladiadminservice.repository.entity.UserRole;
 import com.example.ladiadminservice.service.RoleService;
-import com.example.ladiadminservice.service.RoleUserService;
+import com.example.ladiadminservice.service.UserRoleService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    RoleUserService roleUserService;
+    UserRoleService roleUserService;
 
     RoleService roleService;
     private User user;
@@ -24,8 +25,8 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        Long roleId = roleUserService.getAllByUserId(user.getId()).get(0).getRoleId();
-//        authorities.add(new SimpleGrantedAuthority(roleService.getById(roleId).getCode()));
+        List<UserRole> userRoles = roleUserService.getAllByUserId(user.getId());
+        authorities.add(new SimpleGrantedAuthority(userRoles.get(0).getRole().getCode()));
         return authorities;
     }
 

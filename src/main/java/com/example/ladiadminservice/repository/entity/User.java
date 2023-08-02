@@ -8,14 +8,13 @@ import javax.persistence.*;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter@Builder
+@Builder
 @Data
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
-    @Column(name ="password", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "email")
@@ -25,8 +24,10 @@ public class User extends BaseEntity{
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "unit_id") // thông qua khóa ngoại address_id
-    private Unit unit ;
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
 
+    @Column(name = "full_name")
+    private String fullName;
 
 }

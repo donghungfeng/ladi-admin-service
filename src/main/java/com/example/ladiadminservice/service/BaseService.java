@@ -5,10 +5,19 @@ import com.example.ladiadminservice.repository.entity.BaseEntity;
 import java.util.List;
 
 public interface BaseService<T extends BaseEntity> {
-    public List<T> search(String filter);
-    public T create(T t);
-    public T update(T t);
-    public T getById(Long id);
-    public List<T> getAll();
-    public String delete(Long id);
+    List<T> search(String filter);
+
+    T create(T t);
+
+    T update(T t);
+
+    T getById(Long id);
+
+    List<T> getByIds(List<Long> ids);
+
+    List<T> getAll();
+
+    void delete(Long id);
+
+    void saveAll(List<T> entities);
 }

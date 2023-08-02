@@ -16,7 +16,8 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("user")
 public class UserController extends BaseController<User> {
     @Autowired
-    UserService userService;
+    private UserService userService;
+
     @Override
     protected BaseService<User> getService() {
         return userService;
@@ -28,9 +29,7 @@ public class UserController extends BaseController<User> {
     }
 
     @PostMapping("login")
-    public BaseResponse login(@RequestBody LoginRequest loginRequest, @RequestParam Long unitId) throws NoSuchAlgorithmException {
-        return userService.login(loginRequest, unitId);
+    public BaseResponse login(@RequestBody LoginRequest loginRequest) throws NoSuchAlgorithmException {
+        return userService.login(loginRequest);
     }
-
-
 }

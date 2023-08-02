@@ -14,13 +14,9 @@ import java.util.Date;
 public class CreateUserRequest {
     private String name;
     private String code;
-    private int isActive = 1;
-    private Date createDate;
-    private Date updateDate;
     private String userName;
     private String password;
     private String email;
     private String address;
-    private Long unitId ;
-    private Long roleId;
+    private Long unitId;
 }

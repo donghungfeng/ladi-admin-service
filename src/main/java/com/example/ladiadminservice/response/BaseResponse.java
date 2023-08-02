@@ -13,4 +13,9 @@ public class BaseResponse {
     private int statusCode;
     private String status;
     private Object result;
+
+    public BaseResponse(int statusCode, String status) {
+        this.statusCode = statusCode;
+        this.status = status;
+    }
 }

@@ -28,7 +28,8 @@ public abstract class BaseController<T extends BaseEntity> {
 
 
     @DeleteMapping("")
-    public BaseResponse deleteById(@RequestParam(name = "id") Long id){
-        return new BaseResponse(200, "OK", this.getService().delete(id));
+    public BaseResponse deleteById(@RequestParam(name = "id") Long id) {
+        this.getService().delete(id);
+        return new BaseResponse(200, "OK");
     }
 }

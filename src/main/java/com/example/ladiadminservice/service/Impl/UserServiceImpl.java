@@ -2,6 +2,9 @@ package com.example.ladiadminservice.service.Impl;
 
 
 import com.example.ladiadminservice.config.jwt.JwtTokenProvider;
+import com.example.ladiadminservice.constants.Status;
+import com.example.ladiadminservice.model.UserDto;
+import com.example.ladiadminservice.model.req.AddUserRoleReq;
 import com.example.ladiadminservice.repository.entity.*;
 import com.example.ladiadminservice.response.BaseResponse;
 import com.example.ladiadminservice.response.LoginResponse;
@@ -17,30 +20,26 @@ import org.springframework.util.StringUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UnitService unitService;
+    private UnitService unitService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Autowired
-    RoleUserService roleUserService;
+    private UserRoleService roleUserService;
 
     @Autowired
-    RoleFunctionService roleFunctionService;
-
-    @Autowired
-    FunctionService functionService;
-
-    @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -50,49 +49,49 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         return userRepository;
     }
 
-    public BaseResponse createUser(CreateUserRequest createUserRequest) throws NoSuchAlgorithmException {
+    public BaseResponse createUser(CreateUserRequest createUserRequest) {
         Unit unit = unitService.getById(createUserRequest.getUnitId());
         User user = modelMapper.map(createUserRequest, User.class);
         user.setUnit(unit);
         user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
-        user = userRepository.save(user);
+        user = super.create(user);
 
-        mapUserRole(user, createUserRequest.getRoleId(), unit);
-
-        return new BaseResponse(200, "OK", user);
+        return new BaseResponse(200, "OK", this.toDto(user));
     }
 
-    private void mapUserRole(User user, Long roleId, Unit unit) {
-        Role role = roleService.getById(roleId);
-        RoleUser roleUser = new RoleUser();
-//        roleUser.setCode(unit.getName());
-//        roleUser.setName(unit.getName() + "-" + role.getName());
-        roleUser.setUserId(user.getId());
-        roleUser.setRoleId(role.getId());
-        roleUserService.create(roleUser);
+    private UserDto toDto(User user) {
+        return UserDto.builder()
+                .userName(user.getUserName())
+                .address(user.getAddress())
+                .email(user.getEmail())
+                .unit(user.getUnit())
+                .fullName(user.getFullName())
+                .build();
     }
 
     @Override
-    public BaseResponse login(LoginRequest loginRequest, Long unitId) throws NoSuchAlgorithmException {
-        Unit unit = unitService.getById(unitId);
-        User user = userRepository.findAllByUserNameAndUnit(loginRequest.getUserName(), unit);
-        if (user == null) {
+    public BaseResponse login(LoginRequest loginRequest) throws NoSuchAlgorithmException {
+
+        Optional<User> userOptional = userRepository.findByUserName(loginRequest.getUserName());
+        if (!userOptional.isPresent())
             return new BaseResponse(500, "Account không tồn tại", null);
-        }
+
+        User user = userOptional.get();
+        if (!Objects.equals(user.getStatus(), Status.ACTIVE))
+            return new BaseResponse(500, "Account đã bị khóa", null);
 
         if (!isValidPassword(user.getPassword(), loginRequest.getPassword())) {
             return new BaseResponse(500, "Mật khẩu không chính xác", null);
         }
 
         LoginResponse loginResponse = new LoginResponse();
-        List<RoleUser> roleUserList = roleUserService.getAllByUserId(user.getId());
-        List<Long> roleIdList = roleUserList.stream().map(item -> item.getRoleId()).collect(Collectors.toList());
-        loginResponse.setRoleList(roleService.getAllByInId(roleIdList));
-        List<RoleFunction> roleFunctionList = roleFunctionService.getAllByInRoleId(roleIdList);
-        List<Long> functionIdList = roleFunctionList.stream().map(item -> item.getFunctionId()).collect(Collectors.toList());
-        loginResponse.setFunctionList(functionService.getAllByInId(functionIdList));
         loginResponse.setToken(jwtTokenProvider.generateToken(user.getUserName()));
         return new BaseResponse(200, "OK", loginResponse);
+    }
+
+    @Override
+    public void addRole(AddUserRoleReq req) {
+
     }
 
     private boolean isValidPassword(String userPass, String reqPass) {

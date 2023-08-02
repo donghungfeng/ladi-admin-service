@@ -1,6 +1,5 @@
 package com.example.ladiadminservice.response;
 
-import com.example.ladiadminservice.repository.entity.Function;
 import com.example.ladiadminservice.repository.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +14,4 @@ import java.util.List;
 @Setter
 public class LoginResponse {
     private String token;
-    private List<Role> roleList;
-    private List<Function> functionList;
 }

@@ -27,12 +27,12 @@ public class BaseEntity {
     @Column(name = "status")
     private Integer status;
 
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     @JsonFormat(pattern = "yyyyMMddHHmmss")
     @CreatedDate
     private ZonedDateTime createDate;
 
-    @Column(name = "update_date")
+    @Column(name = "updated_date")
     @JsonFormat(pattern = "yyyyMMddHHmmss")
     @LastModifiedDate
     private ZonedDateTime updateDate;

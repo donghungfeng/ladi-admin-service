@@ -3,9 +3,9 @@ package com.example.ladiadminservice.repository;
 import com.example.ladiadminservice.repository.entity.Unit;
 import com.example.ladiadminservice.repository.entity.User;
 
-public interface UserRepository extends BaseRepository<User>{
-    User findByUserName(String userName);
+import java.util.Optional;
 
-    User findAllByUserNameAndUnit(String userName, Unit unit);
+public interface UserRepository extends BaseRepository<User> {
+    Optional<User> findByUserName(String userName);
 
 }
