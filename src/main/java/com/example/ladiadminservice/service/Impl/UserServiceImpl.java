@@ -49,24 +49,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         return userRepository;
     }
 
-    public BaseResponse createUser(CreateUserRequest createUserRequest) {
-        Unit unit = unitService.getById(createUserRequest.getUnitId());
-        User user = modelMapper.map(createUserRequest, User.class);
-        user.setUnit(unit);
-        user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
-        user = super.create(user);
-
-        return new BaseResponse(200, "OK", this.toDto(user));
-    }
-
-    private UserDto toDto(User user) {
-        return UserDto.builder()
-                .userName(user.getUserName())
-                .address(user.getAddress())
-                .email(user.getEmail())
-                .unit(user.getUnit())
-                .fullName(user.getFullName())
-                .build();
+    @Override
+    public User create(User user) {
+        user.setUnit(unitService.getById(user.getUnit().getId()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return super.create(user);
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController extends BaseController<User> {
     @Autowired
     private UserService userService;
@@ -23,12 +23,7 @@ public class UserController extends BaseController<User> {
         return userService;
     }
 
-    @PostMapping("create")
-    public BaseResponse create(@RequestBody CreateUserRequest createUserRequest) throws NoSuchAlgorithmException {
-        return userService.createUser(createUserRequest);
-    }
-
-    @PostMapping("login")
+    @PostMapping("/login")
     public BaseResponse login(@RequestBody LoginRequest loginRequest) throws NoSuchAlgorithmException {
         return userService.login(loginRequest);
     }

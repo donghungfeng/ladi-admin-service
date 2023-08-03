@@ -10,12 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseResponse {
-    private int statusCode;
-    private String status;
+    private int code;
+    private String message;
     private Object result;
 
     public BaseResponse(int statusCode, String status) {
-        this.statusCode = statusCode;
-        this.status = status;
+        this.code = statusCode;
+        this.message = status;
     }
 }

@@ -9,7 +9,6 @@ import com.example.ladiadminservice.request.LoginRequest;
 import java.security.NoSuchAlgorithmException;
 
 public interface UserService extends BaseService<User> {
-    BaseResponse createUser(CreateUserRequest createUserRequest);
 
     BaseResponse login(LoginRequest loginRequest) throws NoSuchAlgorithmException;
 

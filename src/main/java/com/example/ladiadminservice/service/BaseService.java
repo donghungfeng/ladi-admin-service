@@ -1,11 +1,13 @@
 package com.example.ladiadminservice.service;
 
+import com.example.ladiadminservice.model.req.SearchReq;
 import com.example.ladiadminservice.repository.entity.BaseEntity;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface BaseService<T extends BaseEntity> {
-    List<T> search(String filter);
+    Page<T> search(SearchReq req);
 
     T create(T t);
 
