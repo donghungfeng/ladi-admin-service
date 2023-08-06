@@ -3,14 +3,12 @@ package com.example.ladiadminservice.service.Impl;
 
 import com.example.ladiadminservice.config.jwt.JwtTokenProvider;
 import com.example.ladiadminservice.constants.Status;
-import com.example.ladiadminservice.model.UserDto;
-import com.example.ladiadminservice.model.req.AddUserRoleReq;
+import com.example.ladiadminservice.model.req.AssignUserRoleReq;
 import com.example.ladiadminservice.repository.entity.*;
-import com.example.ladiadminservice.response.BaseResponse;
-import com.example.ladiadminservice.response.LoginResponse;
+import com.example.ladiadminservice.model.BaseResponse;
+import com.example.ladiadminservice.model.LoginResponse;
 import com.example.ladiadminservice.repository.*;
-import com.example.ladiadminservice.request.CreateUserRequest;
-import com.example.ladiadminservice.request.LoginRequest;
+import com.example.ladiadminservice.model.req.LoginRequest;
 import com.example.ladiadminservice.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +35,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     private RoleService roleService;
 
     @Autowired
-    private UserRoleService roleUserService;
+    private UserRoleService userRoleService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -76,9 +75,19 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         return new BaseResponse(200, "OK", loginResponse);
     }
 
+    @Transactional
     @Override
-    public void addRole(AddUserRoleReq req) {
-
+    public void assignRole(AssignUserRoleReq req) {
+        User user = this.getById(req.getUserId());
+        userRoleService.deleteByUser(user.getId());
+        List<Role> roleList = roleService.getAllByInId(req.getRoleIds());
+        List<UserRole> userRoleList = roleList.stream()
+                .map(e -> UserRole.builder()
+                        .user(user)
+                        .role(e)
+                        .build())
+                .collect(Collectors.toList());
+        userRoleService.createAll(userRoleList);
     }
 
     private boolean isValidPassword(String userPass, String reqPass) {

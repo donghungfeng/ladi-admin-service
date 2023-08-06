@@ -1,4 +1,4 @@
-package com.example.ladiadminservice.request;
+package com.example.ladiadminservice.model.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

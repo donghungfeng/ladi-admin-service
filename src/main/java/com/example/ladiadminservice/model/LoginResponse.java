@@ -1,4 +1,4 @@
-package com.example.ladiadminservice.response;
+package com.example.ladiadminservice.model;
 
 import com.example.ladiadminservice.repository.entity.Role;
 import lombok.AllArgsConstructor;

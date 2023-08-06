@@ -5,8 +5,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AddUserRoleReq {
+public class AssignPackageRoleReq {
 
-    private Long userId;
+    private Long packageId;
     private List<Long> roleIds;
 }

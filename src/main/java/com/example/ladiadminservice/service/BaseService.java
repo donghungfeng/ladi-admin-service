@@ -21,5 +21,5 @@ public interface BaseService<T extends BaseEntity> {
 
     void delete(Long id);
 
-    void saveAll(List<T> entities);
+    void createAll(List<T> entities);
 }

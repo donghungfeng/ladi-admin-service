@@ -1,6 +1,7 @@
 package com.example.ladiadminservice.service.Impl;
 
 
+import com.example.ladiadminservice.constants.Status;
 import com.example.ladiadminservice.repository.entity.Role;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.RoleRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
     @Autowired
     RoleRepository roleRepository;
+
     @Override
     protected BaseRepository<Role> getRepository() {
         return roleRepository;
@@ -21,7 +23,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public List<Role> getAllByInId(List<Long> idList) {
-        return roleRepository.findAllByInId(idList);
+        return roleRepository.findByIdInAndStatus(idList, Status.ACTIVE);
     }
 }
 

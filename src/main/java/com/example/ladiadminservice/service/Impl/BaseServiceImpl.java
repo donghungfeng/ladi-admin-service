@@ -74,7 +74,10 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     }
 
     @Override
-    public void saveAll(List<T> entities) {
+    public void createAll(List<T> entities) {
+        entities.forEach(e -> {
+            if (e.getStatus() == null) e.setStatus(Status.ACTIVE);
+        });
         this.getRepository().saveAll(entities);
     }
 

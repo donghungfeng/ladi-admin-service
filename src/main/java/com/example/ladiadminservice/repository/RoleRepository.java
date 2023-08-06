@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RoleRepository extends BaseRepository<Role>{
-    @Query(value = "SELECT * from role where id in (:idList)", nativeQuery = true)
-    List<Role> findAllByInId(List<Long> idList);
+public interface RoleRepository extends BaseRepository<Role> {
+
+    List<Role> findByIdInAndStatus(List<Long> idList, Integer status);
 }
