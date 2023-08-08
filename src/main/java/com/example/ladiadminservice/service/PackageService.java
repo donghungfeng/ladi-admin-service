@@ -5,5 +5,5 @@ import com.example.ladiadminservice.repository.entity.MyPackage;
 
 public interface PackageService extends BaseService<MyPackage> {
 
-    void assignRole(AssignPackageRoleReq req);
+    void assignRole(AssignPackageRoleReq req) throws Exception;
 }

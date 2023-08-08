@@ -9,7 +9,7 @@ import java.util.List;
 public interface BaseService<T extends BaseEntity> {
     Page<T> search(SearchReq req);
 
-    T create(T t);
+    T create(T t) throws Exception;
 
     T update(T t) throws Exception;
 

@@ -11,5 +11,5 @@ public interface UserService extends BaseService<User> {
 
     BaseResponse login(LoginRequest loginRequest) throws NoSuchAlgorithmException;
 
-    void assignRole(AssignUserRoleReq req);
+    void assignRole(AssignUserRoleReq req) throws Exception;
 }

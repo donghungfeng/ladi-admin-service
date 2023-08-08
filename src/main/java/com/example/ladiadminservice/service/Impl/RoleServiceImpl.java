@@ -38,7 +38,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    public void assignMenu(AssignRoleMenuReq req) {
+    public void assignMenu(AssignRoleMenuReq req) throws Exception {
         Role role = this.getById(req.getRoleId());
         roleMenuService.deleteByRole(role.getId());
         if (CollectionUtils.isEmpty(req.getMenuIds())) return;

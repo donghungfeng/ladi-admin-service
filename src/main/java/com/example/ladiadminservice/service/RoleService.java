@@ -9,5 +9,5 @@ import java.util.List;
 public interface RoleService extends BaseService<Role> {
     List<Role> getAllByInId(List<Long> idList);
 
-    void assignMenu(AssignRoleMenuReq req);
+    void assignMenu(AssignRoleMenuReq req) throws Exception;
 }

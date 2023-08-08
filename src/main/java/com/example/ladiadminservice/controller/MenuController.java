@@ -27,7 +27,7 @@ public class MenuController extends BaseController<Menu> {
     }
 
     @PostMapping("/permission/assign")
-    BaseResponse assignMenuPermission(@RequestBody AssignMenuPermissionReq req) {
+    BaseResponse assignMenuPermission(@RequestBody AssignMenuPermissionReq req) throws Exception {
         menuService.assignPermissions(req);
         return new BaseResponse().success();
     }

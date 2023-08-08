@@ -13,7 +13,7 @@ public abstract class BaseController<T extends BaseEntity> {
     protected abstract BaseService<T> getService();
 
     @PostMapping("/create")
-    public BaseResponse create(@RequestBody T t) throws NoSuchAlgorithmException {
+    public BaseResponse create(@RequestBody T t) throws Exception {
         return new BaseResponse(200, "Tạo thành công!", this.getService().create(t));
     }
 
@@ -23,12 +23,12 @@ public abstract class BaseController<T extends BaseEntity> {
     }
 
     @GetMapping("/detail")
-    public BaseResponse getById(@RequestParam(value = "id") Long id) {
+    public BaseResponse getById(@RequestParam(value = "id") Long id) throws Exception {
         return new BaseResponse(200, "Lấy dữ liệu thành công!", this.getService().getById(id));
     }
 
     @PutMapping("/update")
-    public BaseResponse update(@RequestBody T t) throws NoSuchAlgorithmException {
+    public BaseResponse update(@RequestBody T t) throws Exception {
         return new BaseResponse(200, "Cập nhật thành công!", this.getService().update(t));
     }
 

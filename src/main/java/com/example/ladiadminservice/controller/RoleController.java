@@ -23,7 +23,7 @@ public class RoleController extends BaseController<Role> {
     }
 
     @PostMapping("/menu/assign")
-    BaseResponse assignRoleMenu(@RequestBody AssignRoleMenuReq req) {
+    BaseResponse assignRoleMenu(@RequestBody AssignRoleMenuReq req) throws Exception {
         roleService.assignMenu(req);
         return new BaseResponse().success();
     }

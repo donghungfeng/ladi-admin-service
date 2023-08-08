@@ -50,7 +50,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws Exception {
         user.setUnit(unitService.getById(user.getUnit().getId()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return super.create(user);
@@ -78,11 +78,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Transactional
     @Override
-    public void assignRole(AssignUserRoleReq req) {
+    public void assignRole(AssignUserRoleReq req) throws Exception {
         User user = this.getById(req.getUserId());
         userRoleService.deleteByUser(user.getId());
         if (CollectionUtils.isEmpty(req.getRoleIds())) return;
-        
+
         List<Role> roleList = roleService.getAllByInId(req.getRoleIds());
         if (CollectionUtils.isEmpty(roleList)) return;
 

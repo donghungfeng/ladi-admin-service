@@ -49,7 +49,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     }
 
     @Override
-    public T create(T t) {
+    public T create(T t) throws Exception {
         t.setStatus(Status.ACTIVE);
         return this.getRepository().save(t);
     }

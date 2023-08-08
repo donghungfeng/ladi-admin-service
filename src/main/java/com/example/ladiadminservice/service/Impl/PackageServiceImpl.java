@@ -36,14 +36,14 @@ public class PackageServiceImpl extends BaseServiceImpl<MyPackage> implements Pa
     }
 
     @Override
-    public void assignRole(AssignPackageRoleReq req) {
+    public void assignRole(AssignPackageRoleReq req) throws Exception {
         MyPackage myPackage = this.getById(req.getPackageId());
         packageRoleService.deleteByPackageId(req.getPackageId());
         if (CollectionUtils.isEmpty(req.getRoleIds())) return;
 
         List<Role> roleList = roleService.getAllByInId(req.getRoleIds());
         if (CollectionUtils.isEmpty(roleList)) return;
-        
+
         List<PackageRole> packageRoles = roleList.stream()
                 .map(e -> PackageRole.builder()
                         .roleId(e.getId())

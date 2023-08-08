@@ -29,7 +29,7 @@ public class PackageController extends BaseController<MyPackage> {
     }
 
     @PostMapping("/role/assign")
-    public BaseResponse assignPackageRole(@RequestBody AssignPackageRoleReq req) {
+    public BaseResponse assignPackageRole(@RequestBody AssignPackageRoleReq req) throws Exception {
         packageService.assignRole(req);
         return new BaseResponse().success();
     }

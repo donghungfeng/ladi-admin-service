@@ -32,7 +32,7 @@ public class UserController extends BaseController<User> {
     }
 
     @PostMapping("/role/assign")
-    public BaseResponse assignUserRole(@RequestBody AssignUserRoleReq req) {
+    public BaseResponse assignUserRole(@RequestBody AssignUserRoleReq req) throws Exception {
         userService.assignRole(req);
         return new BaseResponse().success();
     }
