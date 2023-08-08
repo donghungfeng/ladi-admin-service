@@ -2,7 +2,6 @@ package com.example.ladiadminservice.controller;
 
 import com.example.ladiadminservice.model.BaseResponse;
 import com.example.ladiadminservice.model.req.AssignPackageRoleReq;
-import com.example.ladiadminservice.model.req.AssignUserRoleReq;
 import com.example.ladiadminservice.repository.entity.MyPackage;
 import com.example.ladiadminservice.service.BaseService;
 
@@ -35,7 +34,7 @@ public class PackageController extends BaseController<MyPackage> {
     }
 
     @GetMapping("/role")
-    public BaseResponse getRoleOfUser(@RequestParam Long userId) {
-        return new BaseResponse().success(packageRoleService.getRolesByPackageId(userId));
+    public BaseResponse getRoleOfPackage(@RequestParam Long packageId) {
+        return new BaseResponse().success(packageRoleService.getRolesByPackageId(packageId));
     }
 }
