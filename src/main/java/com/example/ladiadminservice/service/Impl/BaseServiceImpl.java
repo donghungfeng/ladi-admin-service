@@ -55,15 +55,17 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     }
 
     @Override
-    public T update(T t) {
+    public T update(T t) throws Exception {
         T entityMy = this.getById(t.getId());
         ObjectMapperUtils.map(t, entityMy);
         return getRepository().save(entityMy);
     }
 
     @Override
-    public T getById(Long id) {
-        return this.getRepository().findAllById(id);
+    public T getById(Long id) throws Exception {
+        return this.getRepository().findById(id).orElseThrow(
+                () -> new Exception(String.format("Dữ liệu có id %s không tồn tại!", id))
+        );
     }
 
     @Override
@@ -79,13 +81,5 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
             if (e.getStatus() == null) e.setStatus(Status.ACTIVE);
         });
         this.getRepository().saveAll(entities);
-    }
-
-    @Override
-    public List<T> getByIds(List<Long> ids) {
-        Iterable<T> eIterable = this.getRepository().findAllById(ids);
-        List<T> target = new ArrayList<>();
-        eIterable.forEach(target::add);
-        return target;
     }
 }

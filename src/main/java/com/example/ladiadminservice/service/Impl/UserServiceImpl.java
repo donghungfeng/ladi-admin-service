@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
@@ -80,7 +81,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public void assignRole(AssignUserRoleReq req) {
         User user = this.getById(req.getUserId());
         userRoleService.deleteByUser(user.getId());
+        if (CollectionUtils.isEmpty(req.getRoleIds())) return;
+        
         List<Role> roleList = roleService.getAllByInId(req.getRoleIds());
+        if (CollectionUtils.isEmpty(roleList)) return;
+
         List<UserRole> userRoleList = roleList.stream()
                 .map(e -> UserRole.builder()
                         .user(user)

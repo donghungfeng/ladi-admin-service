@@ -11,11 +11,9 @@ public interface BaseService<T extends BaseEntity> {
 
     T create(T t);
 
-    T update(T t);
+    T update(T t) throws Exception;
 
-    T getById(Long id);
-
-    List<T> getByIds(List<Long> ids);
+    T getById(Long id) throws Exception;
 
     List<T> getAll();
 

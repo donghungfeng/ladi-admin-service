@@ -11,6 +11,7 @@ import com.example.ladiadminservice.service.PackageService;
 import com.example.ladiadminservice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,8 +39,11 @@ public class PackageServiceImpl extends BaseServiceImpl<MyPackage> implements Pa
     public void assignRole(AssignPackageRoleReq req) {
         MyPackage myPackage = this.getById(req.getPackageId());
         packageRoleService.deleteByPackageId(req.getPackageId());
+        if (CollectionUtils.isEmpty(req.getRoleIds())) return;
 
         List<Role> roleList = roleService.getAllByInId(req.getRoleIds());
+        if (CollectionUtils.isEmpty(roleList)) return;
+        
         List<PackageRole> packageRoles = roleList.stream()
                 .map(e -> PackageRole.builder()
                         .roleId(e.getId())
