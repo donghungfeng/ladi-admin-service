@@ -10,6 +10,7 @@ import com.example.ladiadminservice.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/package")
 public class PackageController extends BaseController<MyPackage> {
