@@ -4,9 +4,11 @@ import com.example.ladiadminservice.repository.entity.Config;
 
 import com.example.ladiadminservice.service.BaseService;
 import com.example.ladiadminservice.service.ConfigService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/config")
 public class ConfigController extends BaseController<Config> {

@@ -9,6 +9,7 @@ import com.example.ladiadminservice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("role")
 public class RoleController extends BaseController<Role> {
