@@ -7,6 +7,7 @@ def staging_host = '103.75.185.204'
 def repo = 'ladi-admin-service'
 def image = 'admin_be_image.tar'
 def container_name = 'BE_admin_service'
+def ssh_port = '24700'
 
 pipeline {
     agent any
@@ -45,28 +46,28 @@ pipeline {
 						sh 'docker save -o ' + image + ' ' + repo + ':latest'
 	
 						// Copy compressed image to Staging host
-						sh 'scp -i ~/.ssh/id_rsa ' + image + ' root@' + staging_host + ':.'
+						sh 'scp -i ~/.ssh/id_rsa -P ' + ssh_port + ' ' + image + ' root@' + staging_host + ':.'
 	
-						sh 'ssh -i ~/.ssh/id_rsa root@' + staging_host + ' "docker load -i ' + image + '"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker load -i ' + image + '"'
 						// Build image on Staging host
 	
 						// Stop current container
-						//sh 'ssh -i ~/.ssh/id_rsa root@' + staging_host + ' "docker stop ' + container_name + '"'
+						//sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '"'
 	
 						// Remove current container
-						//sh 'ssh -i ~/.ssh/id_rsa root@' + staging_host + ' "docker rm ' + container_name + '"'
+						//sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '"'
 	
 						// Run container with new image
-						sh 'ssh -i ~/.ssh/id_rsa root@' + staging_host + ' "docker run -itdp 8084:8080 --name ' + container_name + ' ' + repo + ':latest"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest"'
 	
 						// Remove compressed image
-						sh 'ssh -i ~/.ssh/id_rsa root@' + staging_host + ' "rm ' + image + '"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "rm ' + image + '"'
 	
 						// Remove files on local
-						sh 'rm ' + image + ''
-            
-						// Remove unused images on local
-						sh 'ssh -i ~/.ssh/id_rsa root@' + staging_host + ' "~/remove_none_images.sh"'
+						sh 'rm ' + image + '' 
+					
+						// Remove unused images on staging host
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "~/remove_none_images.sh"'
 				}
 			}
 		}
