@@ -22,4 +22,6 @@ public class DomainController extends BaseController<Domain> {
     protected BaseService<Domain> getService() {
         return domainService;
     }
+
+
 }
