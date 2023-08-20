@@ -26,5 +26,5 @@ public class Menu extends BaseEntity {
     private Integer priority;
     @ManyToOne
     @JoinColumn(name = "parent_id")
-    private Menu menu;
+    private Menu parent;
 }
