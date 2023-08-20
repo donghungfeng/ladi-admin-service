@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
 
@@ -20,6 +21,8 @@ import java.time.ZonedDateTime;
 public class MyPackage extends BaseEntity {
     private String code;
     private String name;
+
+    @Lob
     private String image;
     private String description;
     private Integer type;
