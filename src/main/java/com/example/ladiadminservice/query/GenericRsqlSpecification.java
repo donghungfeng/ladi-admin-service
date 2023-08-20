@@ -29,15 +29,14 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
         Object argument = args.get(0);
         switch (RsqlSearchOperation.getSimpleOperator(operator)) {
 
-            case EQUAL:
-            {
+            case EQUAL: {
                 if (String.valueOf(argument).equals(SearchConstant.NUMBER_NULL))
                     return builder.isNull(builder.lower(propertyExpression));
                 if (String.valueOf(argument).equals(SearchConstant.OBJECT_NULL))
                     return builder.isNull(builder.lower(propertyExpression));
                 if (String.valueOf(argument).equals(SearchConstant.OBJECT_NOT_NULL))
                     return builder.isNotNull(builder.lower(propertyExpression));
-                if (isDouble(javaType))
+                if (isDouble(javaType) || isInteger(javaType))
                     return builder.equal(propertyExpression, argument);
                 if (argument instanceof String) {
                     return builder.like(builder.lower(propertyExpression),
@@ -50,7 +49,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             }
             case NOT_EQUAL: {
                 if (argument instanceof String) {
-                    return builder.notLike(root.<String> get(property), argument.toString().replace('*', '%'));
+                    return builder.notLike(root.<String>get(property), argument.toString().replace('*', '%'));
                 } else if (argument == null) {
                     return builder.isNotNull(root.get(property));
                 } else {
@@ -58,16 +57,16 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
                 }
             }
             case GREATER_THAN: {
-                return builder.greaterThan(root.<String> get(property), argument.toString());
+                return builder.greaterThan(root.<String>get(property), argument.toString());
             }
             case GREATER_THAN_OR_EQUAL: {
-                return builder.greaterThanOrEqualTo(root.<String> get(property), argument.toString());
+                return builder.greaterThanOrEqualTo(root.<String>get(property), argument.toString());
             }
             case LESS_THAN: {
-                return builder.lessThan(root.<String> get(property), argument.toString());
+                return builder.lessThan(root.<String>get(property), argument.toString());
             }
             case LESS_THAN_OR_EQUAL: {
-                return builder.lessThanOrEqualTo(root.<String> get(property), argument.toString());
+                return builder.lessThanOrEqualTo(root.<String>get(property), argument.toString());
             }
             case IN:
                 return root.get(property).in(args);
@@ -77,9 +76,15 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
 
         return null;
     }
+
     private Boolean isDouble(String javaType) {
         return javaType.equals("class java.lang.Double");
     }
+
+    private Boolean isInteger(String javaType) {
+        return javaType.equals("class java.lang.Integer");
+    }
+
     private Path<String> parseProperty(Root<T> root) {
         Path<String> path;
         if (property.contains(".")) {
@@ -107,6 +112,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
                 .replace("%", HIBERNATE_ESCAPE_CHAR + "%")
                 .replace('*', '%');
     }
+
     private List<Object> castArguments(Path<?> propertyExpression) {
         Class<?> type = propertyExpression.getJavaType();
 
