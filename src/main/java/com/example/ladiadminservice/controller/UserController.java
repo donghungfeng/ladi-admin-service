@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController<User> {
