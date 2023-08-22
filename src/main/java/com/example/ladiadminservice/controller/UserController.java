@@ -7,7 +7,6 @@ import com.example.ladiadminservice.model.req.LoginRequest;
 import com.example.ladiadminservice.service.BaseService;
 import com.example.ladiadminservice.service.UserRoleService;
 import com.example.ladiadminservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -17,10 +16,14 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController<User> {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRoleService userRoleService;
+
+    private final UserService userService;
+    private final UserRoleService userRoleService;
+
+    public UserController(UserService userService, UserRoleService userRoleService) {
+        this.userService = userService;
+        this.userRoleService = userRoleService;
+    }
 
     @Override
     protected BaseService<User> getService() {
@@ -41,5 +44,10 @@ public class UserController extends BaseController<User> {
     @GetMapping("/role")
     public BaseResponse getRoleOfUser(@RequestParam Long userId) {
         return new BaseResponse().success(userRoleService.getRolesByUserId(userId));
+    }
+
+    @GetMapping("/package")
+    public BaseResponse getPackageOfUser(@RequestParam(required = false) Long userId) throws Exception {
+        return new BaseResponse().success(userService.getPackageOfUser(userId));
     }
 }
