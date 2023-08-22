@@ -1,8 +1,9 @@
 package com.example.ladiadminservice.service.Impl;
 
+import com.example.ladiadminservice.mapper.PackageMapper;
+import com.example.ladiadminservice.model.PackageDto;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.UnitPackageRepository;
-import com.example.ladiadminservice.repository.entity.Unit;
 import com.example.ladiadminservice.repository.entity.UnitPackage;
 import com.example.ladiadminservice.service.UnitPackageService;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class UnitPackageServiceImpl extends BaseServiceImpl<UnitPackage> implements UnitPackageService {
 
     private final UnitPackageRepository packageRepository;
+    private final PackageMapper packageMapper;
 
-    public UnitPackageServiceImpl(UnitPackageRepository packageRepository) {
+    public UnitPackageServiceImpl(UnitPackageRepository packageRepository, PackageMapper packageMapper) {
         this.packageRepository = packageRepository;
+        this.packageMapper = packageMapper;
     }
 
     @Override
@@ -32,5 +35,13 @@ public class UnitPackageServiceImpl extends BaseServiceImpl<UnitPackage> impleme
         if (CollectionUtils.isEmpty(unitPackageList)) return Optional.empty();
 
         return Optional.of(unitPackageList.get(0));
+    }
+
+    @Override
+    public PackageDto getPackageDtoByUnitId(Long unitId) {
+        Optional<UnitPackage> unitPackageOptional = this.getActiveByUnitId(unitId);
+        return unitPackageOptional.isPresent()
+                ? packageMapper.toDto(unitPackageOptional.get().getMyPackage())
+                : null;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.ladiadminservice.config.jwt;
 
 import com.example.ladiadminservice.uitl.ContextUtil;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,8 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-                String userName = jwtTokenProvider.getAccountUserNameFromJWT(jwt);
+                Claims claims = jwtTokenProvider.getClaims(jwt);
+                String userName = claims.getSubject();
                 contextUtil.setUserName(userName);
+                contextUtil.setUserId(Long.valueOf(claims.getId()));
                 UserDetails userDetails = customUserService.loadUserByUsername(userName);
                 if (userDetails != null) {
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
@@ -49,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log.error("failed", ex);
         }
         filterChain.doFilter(request, response);

@@ -1,4 +1,6 @@
 package com.example.ladiadminservice.config.jwt;
+
+import com.example.ladiadminservice.repository.entity.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -8,18 +10,20 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     private final String JWT_SECRET = "DHF_GROUP";
 
-    public String generateToken(String username){
+    public String generateToken(User user) {
+        Claims claims = Jwts.claims().setSubject(user.getUserName());
+        claims.setId(String.valueOf(user.getId()));
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
 
-    public String getAccountUserNameFromJWT(String token) {
-        Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    public Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
     }
-    public boolean validateToken(String authToken){
+
+    public boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
             return true;
