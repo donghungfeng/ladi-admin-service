@@ -27,4 +27,11 @@ public class BaseResponse {
                 .result(result)
                 .build();
     }
+
+    public static BaseResponse error(String message) {
+        return BaseResponse.builder()
+                .code(-1)
+                .message(message)
+                .build();
+    }
 }

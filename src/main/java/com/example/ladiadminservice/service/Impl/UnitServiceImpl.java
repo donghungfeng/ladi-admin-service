@@ -19,14 +19,13 @@ public class UnitServiceImpl extends BaseServiceImpl<Unit> implements UnitServic
 
     @Autowired
     private UnitPackageService unitPackageService;
+    @Autowired
+    private DomainService domainService;
 
     private final UnitRepository unitRepository;
-    private final DomainService domainService;
 
-    public UnitServiceImpl(UnitRepository unitRepository
-            , DomainService domainService) {
+    public UnitServiceImpl(UnitRepository unitRepository) {
         this.unitRepository = unitRepository;
-        this.domainService = domainService;
     }
 
     @Override
