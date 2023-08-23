@@ -9,5 +9,5 @@ public interface MenuRepository extends BaseRepository<Menu> {
 
     List<Menu> getByIdInAndStatus(List<Long> ids, Integer status);
 
-    Optional<Menu> getByCodeAndStatusNotLike(String code, Integer status);
+    Optional<Menu> getByCodeAndStatusGreaterThan(String code, Integer status);
 }

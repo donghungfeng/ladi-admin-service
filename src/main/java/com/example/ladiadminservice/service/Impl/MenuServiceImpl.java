@@ -35,9 +35,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
 
     @Override
     public Menu create(Menu menu) throws Exception {
-        Optional<Menu> menuOptional = menuRepository.getByCodeAndStatusNotLike(menu.getCode(), Status.DELETED);
-        if (menuOptional.isPresent())
-            throw new Exception(String.format("Dữ liệu có mã %s đã tồn tại!", menu.getCode()));
+        validateDuplicateCode(menu.getCode());
         return super.create(menu);
     }
 
@@ -53,7 +51,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     private void validateDuplicateCode(String code) throws Exception {
-        Optional<Menu> menuOptional = menuRepository.getByCodeAndStatusNotLike(code, Status.DELETED);
+        Optional<Menu> menuOptional = menuRepository.getByCodeAndStatusGreaterThan(code, Status.DELETED);
         if (menuOptional.isPresent())
             throw new Exception(String.format("Dữ liệu có mã %s đã tồn tại!", code));
     }
