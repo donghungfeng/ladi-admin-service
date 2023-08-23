@@ -10,11 +10,15 @@ import com.example.ladiadminservice.repository.entity.Permission;
 import com.example.ladiadminservice.service.MenuPermissionService;
 import com.example.ladiadminservice.service.MenuService;
 import com.example.ladiadminservice.service.PermissionService;
+import com.example.ladiadminservice.uitl.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +31,31 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
 
     public MenuServiceImpl(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
+    }
+
+    @Override
+    public Menu create(Menu menu) throws Exception {
+        Optional<Menu> menuOptional = menuRepository.getByCodeAndStatusNotLike(menu.getCode(), Status.DELETED);
+        if (menuOptional.isPresent())
+            throw new Exception(String.format("Dữ liệu có mã %s đã tồn tại!", menu.getCode()));
+        return super.create(menu);
+    }
+
+    @Override
+    public Menu update(Menu req) throws Exception {
+        Menu entityMy = this.getById(req.getId());
+
+        if (!StringUtils.isEmpty(req.getCode()) && !Objects.equals(entityMy.getCode(), req.getCode()))
+            validateDuplicateCode(req.getCode());
+
+        ObjectMapperUtils.map(req, entityMy);
+        return getRepository().save(entityMy);
+    }
+
+    private void validateDuplicateCode(String code) throws Exception {
+        Optional<Menu> menuOptional = menuRepository.getByCodeAndStatusNotLike(code, Status.DELETED);
+        if (menuOptional.isPresent())
+            throw new Exception(String.format("Dữ liệu có mã %s đã tồn tại!", code));
     }
 
     @Override
