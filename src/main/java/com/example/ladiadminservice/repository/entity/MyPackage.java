@@ -45,4 +45,7 @@ public class MyPackage extends BaseEntity {
     @JsonFormat(pattern = "yyyyMMddHHmmss")
     @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
     private ZonedDateTime endDate;
+
+    @Column(name = "flag")
+    private Integer flag;
 }

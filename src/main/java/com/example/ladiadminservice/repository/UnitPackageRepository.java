@@ -15,4 +15,6 @@ public interface UnitPackageRepository extends BaseRepository<UnitPackage> {
             " AND up.startDate <= :now " +
             " AND up.endDate >= :now ")
     List<UnitPackage> getActiveByUnit(Long unitId, ZonedDateTime now);
+
+    List<UnitPackage> getByUnitAndStatusGreaterThan(Unit unit, Integer status);
 }
