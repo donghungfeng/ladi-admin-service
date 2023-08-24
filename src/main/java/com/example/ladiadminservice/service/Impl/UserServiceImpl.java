@@ -45,7 +45,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     private final ContextUtil contextUtil;
     private final UnitPackageService unitPackageService;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserServiceImpl(ContextUtil contextUtil, UnitPackageService unitPackageService) {
         this.contextUtil = contextUtil;

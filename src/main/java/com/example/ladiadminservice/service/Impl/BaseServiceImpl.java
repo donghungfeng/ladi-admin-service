@@ -2,9 +2,9 @@ package com.example.ladiadminservice.service.Impl;
 
 import com.example.ladiadminservice.constants.Status;
 import com.example.ladiadminservice.model.req.SearchReq;
-import com.example.ladiadminservice.repository.entity.BaseEntity;
 import com.example.ladiadminservice.query.CustomRsqlVisitor;
 import com.example.ladiadminservice.repository.BaseRepository;
+import com.example.ladiadminservice.repository.entity.BaseEntity;
 import com.example.ladiadminservice.service.BaseService;
 import com.example.ladiadminservice.uitl.ObjectMapperUtils;
 import cz.jirutka.rsql.parser.RSQLParser;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
@@ -50,7 +49,8 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
 
     @Override
     public T create(T t) throws Exception {
-        t.setStatus(Status.ACTIVE);
+        if (t.getStatus() == null)
+            t.setStatus(Status.ACTIVE);
         return this.getRepository().save(t);
     }
 
