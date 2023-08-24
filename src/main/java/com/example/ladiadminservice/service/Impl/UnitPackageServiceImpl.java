@@ -5,7 +5,10 @@ import com.example.ladiadminservice.model.PackageDto;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.UnitPackageRepository;
 import com.example.ladiadminservice.repository.entity.UnitPackage;
+import com.example.ladiadminservice.service.PackageService;
 import com.example.ladiadminservice.service.UnitPackageService;
+import com.example.ladiadminservice.service.UnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -15,7 +18,10 @@ import java.util.Optional;
 
 @Service
 public class UnitPackageServiceImpl extends BaseServiceImpl<UnitPackage> implements UnitPackageService {
-
+    @Autowired
+    private PackageService packageService;
+    @Autowired
+    private UnitService unitService;
     private final UnitPackageRepository packageRepository;
     private final PackageMapper packageMapper;
 
@@ -43,5 +49,12 @@ public class UnitPackageServiceImpl extends BaseServiceImpl<UnitPackage> impleme
         return unitPackageOptional.isPresent()
                 ? packageMapper.toDto(unitPackageOptional.get().getMyPackage())
                 : null;
+    }
+
+    @Override
+    public UnitPackage create(UnitPackage unitPackage) throws Exception {
+        unitPackage.setMyPackage(packageService.getById(unitPackage.getMyPackage().getId()));
+        unitPackage.setUnit(unitService.getById(unitPackage.getUnit().getId()));
+        return super.create(unitPackage);
     }
 }
