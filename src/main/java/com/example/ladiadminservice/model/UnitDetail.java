@@ -1,6 +1,5 @@
 package com.example.ladiadminservice.model;
 
-import com.example.ladiadminservice.repository.entity.MyPackage;
 import com.example.ladiadminservice.repository.entity.Unit;
 import com.example.ladiadminservice.uitl.ZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,11 +15,11 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UnitInfoDto {
+public class UnitDetail {
     private Long unitPackageId;
-    private Integer status;
+    private Integer unitPackageStatus;
 
-    private MyPackage myPackage;
+    private PackageDto myPackage;
 
     private Unit unit;
 

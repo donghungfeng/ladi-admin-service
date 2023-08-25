@@ -31,19 +31,23 @@ public class PackageRoleServiceImpl extends BaseServiceImpl<PackageRole> impleme
 
     @Override
     public void deleteByPackageId(Long packageId) {
-        List<PackageRole> packageRoles = packageRoleRepository.findByPackageId(packageId);
+        List<PackageRole> packageRoles = this.getActiveByPackageId(packageId);
         packageRoles.forEach(e -> e.setStatus(Status.DELETED));
         packageRoleRepository.saveAll(packageRoles);
     }
 
     @Override
     public List<Role> getRolesByPackageId(Long packageId) {
-        List<PackageRole> packageRoles = packageRoleRepository.findByPackageId(packageId);
+        List<PackageRole> packageRoles = this.getActiveByPackageId(packageId);
         return roleService.getAllByInId(
                 packageRoles.stream()
                         .map(PackageRole::getRoleId)
                         .collect(Collectors.toList())
         );
+    }
+
+    private List<PackageRole> getActiveByPackageId(Long packageId) {
+        return packageRoleRepository.findByPackageIdAndStatus(packageId, Status.ACTIVE);
     }
 
 

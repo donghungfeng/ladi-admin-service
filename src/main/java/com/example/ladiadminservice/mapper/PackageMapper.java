@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class PackageMapper extends BaseMapper {
 
     public PackageDto toDto(MyPackage myPackage) {
+        if (myPackage == null) return null;
         return mapper.map(myPackage, PackageDto.class);
     }
 }

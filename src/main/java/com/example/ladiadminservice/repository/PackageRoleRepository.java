@@ -5,5 +5,5 @@ import com.example.ladiadminservice.repository.entity.PackageRole;
 import java.util.List;
 
 public interface PackageRoleRepository extends BaseRepository<PackageRole> {
-    List<PackageRole> findByPackageId(Long packageId);
+    List<PackageRole> findByPackageIdAndStatus(Long packageId, Integer status);
 }

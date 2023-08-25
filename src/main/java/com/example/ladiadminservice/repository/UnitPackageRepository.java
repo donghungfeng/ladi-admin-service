@@ -19,7 +19,7 @@ public interface UnitPackageRepository extends BaseRepository<UnitPackage> {
     List<UnitPackage> getByUnitAndStatusGreaterThan(Unit unit, Integer status);
 
     @Query("SELECT up FROM UnitPackage up " +
-            " WHERE up.unit in :unit " +
+            " WHERE up.unit in :units " +
             " AND up.status > -1 " +
             " AND up.myPackage.status > -1 ")
     List<UnitPackage> getByUnits(List<Unit> units);
