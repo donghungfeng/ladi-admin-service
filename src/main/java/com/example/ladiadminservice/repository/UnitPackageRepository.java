@@ -17,4 +17,10 @@ public interface UnitPackageRepository extends BaseRepository<UnitPackage> {
     List<UnitPackage> getActiveByUnit(Long unitId, ZonedDateTime now);
 
     List<UnitPackage> getByUnitAndStatusGreaterThan(Unit unit, Integer status);
+
+    @Query("SELECT up FROM UnitPackage up " +
+            " WHERE up.unit in :unit " +
+            " AND up.status > -1 " +
+            " AND up.myPackage.status > -1 ")
+    List<UnitPackage> getByUnits(List<Unit> units);
 }

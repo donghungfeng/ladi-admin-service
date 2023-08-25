@@ -41,7 +41,6 @@ public class UnitPackageServiceImpl extends BaseServiceImpl<UnitPackage> impleme
     public Optional<UnitPackage> getActiveByUnitId(Long unitId) {
         List<UnitPackage> unitPackageList = unitPackageRepository.getActiveByUnit(unitId, ZonedDateTime.now());
         if (CollectionUtils.isEmpty(unitPackageList)) return Optional.empty();
-
         return Optional.of(unitPackageList.get(0));
     }
 
@@ -51,6 +50,11 @@ public class UnitPackageServiceImpl extends BaseServiceImpl<UnitPackage> impleme
         return unitPackageOptional.isPresent()
                 ? packageMapper.toDto(unitPackageOptional.get().getMyPackage())
                 : null;
+    }
+
+    @Override
+    public List<UnitPackage> getByUnits(List<Unit> units) {
+        return unitPackageRepository.getByUnits(units);
     }
 
     @Override
