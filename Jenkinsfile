@@ -52,7 +52,7 @@ pipeline {
 						sh 'docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest'
 					
 						// Remove unused images on staging host
-						sh 'sudo /root/remove_none_images.sh'
+						//sh 'sudo /root/remove_none_images.sh'
 				}
 			}
 		}
