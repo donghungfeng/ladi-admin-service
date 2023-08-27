@@ -1,5 +1,5 @@
 def TeleUrl = 'https://api.telegram.org/bot1647436660:AAF8OrMu-FqlwWxj2_M4k_allIGLNwjS83E/sendMessage'
-def TeleChatId = -912839571
+def TeleChatId = -1001249400214
 def ServiceName = '[Admin_BE]'
 def GIT_COMMIT_MSG
 def GIT_AUTHOR
