@@ -43,10 +43,10 @@ pipeline {
 						sh 'docker build -t ' + repo + ':latest -f Dockerfile .'
 
 						// Stop current container
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '" || true'
 	
 						// Remove current container
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '" || true'
 	
 						// Run container with new image
 						sh 'docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest'
