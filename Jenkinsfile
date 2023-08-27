@@ -52,10 +52,10 @@ pipeline {
 						// Build image on Staging host
 	
 						// Stop current container
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '"'
+						//sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '"'
 	
 						// Remove current container
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '"'
+						//sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '"'
 	
 						// Run container with new image
 						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest"'
