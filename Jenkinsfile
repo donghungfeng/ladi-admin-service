@@ -49,7 +49,7 @@ pipeline {
 						//sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '"'
 	
 						// Run container with new image
-						sh 'docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest''
+						sh 'docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest'
 					
 						// Remove unused images on staging host
 						sh 'sudo /root/remove_none_images.sh'
