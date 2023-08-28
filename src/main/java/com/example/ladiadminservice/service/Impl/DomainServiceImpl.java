@@ -5,6 +5,7 @@ import com.example.ladiadminservice.mapper.DomainMapper;
 import com.example.ladiadminservice.model.DomainDto;
 import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.DomainRepository;
+import com.example.ladiadminservice.repository.entity.Config;
 import com.example.ladiadminservice.repository.entity.Domain;
 import com.example.ladiadminservice.service.DomainService;
 import com.example.ladiadminservice.service.UnitService;
@@ -12,8 +13,11 @@ import com.example.ladiadminservice.uitl.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DomainServiceImpl extends BaseServiceImpl<Domain> implements DomainService {
@@ -34,6 +38,12 @@ public class DomainServiceImpl extends BaseServiceImpl<Domain> implements Domain
     }
 
     @Override
+    public Domain create(Domain domain) throws Exception {
+        validateDuplicateCode(domain.getUrl());
+        return super.create(domain);
+    }
+
+    @Override
     public DomainDto getByUnitId(Long unitId) {
         List<Domain> domains = domainRepository.getByUnit_IdAndStatus(unitId, Status.ACTIVE);
         if (CollectionUtils.isEmpty(domains)) return null;
@@ -43,8 +53,18 @@ public class DomainServiceImpl extends BaseServiceImpl<Domain> implements Domain
     @Override
     public Domain update(Domain req) throws Exception {
         Domain entityMy = this.getById(req.getId());
+
+        if (!StringUtils.isEmpty(req.getUrl()) && !Objects.equals(entityMy.getUrl(), req.getUrl()))
+            validateDuplicateCode(req.getUrl());
+
         if (req.getUnit() != null) req.setUnit(unitService.getById(req.getUnit().getId()));
         ObjectMapperUtils.map(req, entityMy);
         return getRepository().save(entityMy);
+    }
+
+    private void validateDuplicateCode(String url) throws Exception {
+        Optional<Domain> entityOptional = domainRepository.getByUrlAndStatusGreaterThan(url, Status.DELETED);
+        if (entityOptional.isPresent())
+            throw new Exception(String.format("Dữ liệu có url %s đã tồn tại!", url));
     }
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface DomainRepository extends BaseRepository<Domain> {
 
     List<Domain> getByUnit_IdAndStatus(Long unitId, Integer status);
+
+    Optional<Domain> getByUrlAndStatusGreaterThan(String url, Integer status);
 }
