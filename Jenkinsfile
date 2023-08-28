@@ -41,33 +41,18 @@ pipeline {
 	
 						// Build docker image
 						sh 'docker build -t ' + repo + ':latest -f Dockerfile .'
-	
-						// Compress docker image
-						sh 'docker save -o ' + image + ' ' + repo + ':latest'
-	
-						// Copy compressed image to Staging host
-						sh 'scp -i ~/.ssh/id_rsa -P ' + ssh_port + ' ' + image + ' root@' + staging_host + ':.'
-	
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker load -i ' + image + '"'
-						// Build image on Staging host
-	
+
 						// Stop current container
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker stop ' + container_name + '" || true'
 	
 						// Remove current container
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '"'
+						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker rm ' + container_name + '" || true'
 	
 						// Run container with new image
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest"'
-	
-						// Remove compressed image
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "rm ' + image + '"'
-	
-						// Remove files on local
-						sh 'rm ' + image + '' 
+						sh 'docker run -itdp 8080:8080 --name ' + container_name + ' ' + repo + ':latest'
 					
 						// Remove unused images on staging host
-						sh 'ssh -i ~/.ssh/id_rsa -p ' + ssh_port + ' root@' + staging_host + ' "~/remove_none_images.sh"'
+						//sh 'sudo /root/remove_none_images.sh'
 				}
 			}
 		}
