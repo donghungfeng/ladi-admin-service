@@ -7,6 +7,7 @@ import com.example.ladiadminservice.repository.BaseRepository;
 import com.example.ladiadminservice.repository.DomainRepository;
 import com.example.ladiadminservice.repository.entity.Config;
 import com.example.ladiadminservice.repository.entity.Domain;
+import com.example.ladiadminservice.repository.entity.Unit;
 import com.example.ladiadminservice.service.DomainService;
 import com.example.ladiadminservice.service.UnitService;
 import com.example.ladiadminservice.uitl.ObjectMapperUtils;
@@ -57,9 +58,19 @@ public class DomainServiceImpl extends BaseServiceImpl<Domain> implements Domain
         if (!StringUtils.isEmpty(req.getUrl()) && !Objects.equals(entityMy.getUrl(), req.getUrl()))
             validateDuplicateCode(req.getUrl());
 
-        if (req.getUnit() != null) req.setUnit(unitService.getById(req.getUnit().getId()));
+        Unit unit = this.getUnit(req, entityMy);
+        req.setUnit(null);
+
         ObjectMapperUtils.map(req, entityMy);
+        entityMy.setUnit(unit);
+
         return getRepository().save(entityMy);
+    }
+
+    private Unit getUnit(Domain req, Domain entityMy) throws Exception {
+        return req.getUnit() != null
+                ? unitService.getById(req.getUnit().getId())
+                : entityMy.getUnit();
     }
 
     private void validateDuplicateCode(String url) throws Exception {
